@@ -24,7 +24,7 @@ const Rotas = () => (
       }
     />
     <Route
-      path="/perfil"
+      path="/perfil/:id"
       element={
         <>
           <HeaderPerfil />
