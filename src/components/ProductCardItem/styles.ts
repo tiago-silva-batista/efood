@@ -8,23 +8,25 @@ export const Card = styled.div`
   max-width: 320px;
   text-align: left;
   color: ${colors.white};
+  border-radius: 8px;
 
   img {
     width: 100%;
+    border-radius: 8px;
   }
 
   h3 {
     font-weght: bold;
     margin-top: 8px;
     font-size: 16px;
-    color: ${colors.lightBeige};
+    color: ${colors.beige};
   }
 
   p {
     font-size: 14px;
     margin-top: 8px;
     line-height: 22px;
-    color: ${colors.lightBeige};
+    color: ${colors.beige};
   }
 
   button {
