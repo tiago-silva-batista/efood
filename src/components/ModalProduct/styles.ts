@@ -3,8 +3,10 @@ import { colors } from '../../styles'
 
 export const ModalContentContainer = styled.div`
   display: flex;
-  height: 100%;
   gap: 24px;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
 `
 
 export const ProductImage = styled.img`
@@ -14,6 +16,8 @@ export const ProductImage = styled.img`
 `
 
 export const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
 `
 
@@ -33,13 +37,21 @@ export const Description = styled.p`
 `
 
 export const BuyButton = styled.button`
+  margin-top: auto;
   width: 218px;
   height: 24px;
   padding: 4px;
   background-color: ${colors.beige};
   color: ${colors.orange};
-  border: none;
+  border: 1px solid transparent;
   font-weight: bold;
   font-size: 14px;
   cursor: pointer;
+  transition: 0.8s ease;
+
+  &:hover {
+    background-color: ${colors.orange};
+    color: ${colors.beige};
+    border-color: ${colors.beige};
+  }
 `

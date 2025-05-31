@@ -8,8 +8,14 @@ export const SectionContainer = styled.section`
   background-color: ${colors.lightBeige};
 `
 
-export const List = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+export const List = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: stretch;
+
+  li {
+    flex: 1 1 320px;
+    display: flex;
+  }
 `
