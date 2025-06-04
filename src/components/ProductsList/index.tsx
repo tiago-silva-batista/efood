@@ -1,7 +1,7 @@
-import Product from '../Product'
+import ProductsCard from '../ProductsCard'
 import { Produto } from '../../types'
 
-import { SectionContainer, List } from './styles'
+import { SectionContainer } from './styles'
 
 export type Props = {
   products: Produto[]
@@ -9,11 +9,7 @@ export type Props = {
 
 const ProductsList = ({ products }: Props) => (
   <SectionContainer>
-    <List>
-      {products.map((produto) => (
-        <Product key={produto.id} {...produto} />
-      ))}
-    </List>
+    <ProductsCard products={products} />
   </SectionContainer>
 )
 

@@ -1,13 +1,14 @@
 import {
-  ModalContentContainer,
+  ModalBody,
   ProductImage,
-  InfoContainer,
-  Title,
-  Description,
-  BuyButton
+  ModalText,
+  ProductTitle,
+  ProductDescription,
+  ProductServing,
+  AddButton
 } from './styles'
 
-export type ModalProductProps = {
+type Props = {
   capa: string
   titulo: string
   descricao: string
@@ -23,21 +24,22 @@ const ModalProduct = ({
   porcao,
   preco,
   onBuyClick
-}: ModalProductProps) => (
-  <ModalContentContainer>
+}: Props) => (
+  <ModalBody>
     <ProductImage src={capa} alt={titulo} />
-    <InfoContainer>
-      <Title>{titulo}</Title>
-      <Description>
-        <p>{descricao}</p>
-        <br />
-        <p>Serve {porcao}</p>
-      </Description>
-      <BuyButton onClick={onBuyClick}>
+
+    <ModalText>
+      <div>
+        <ProductTitle>{titulo}</ProductTitle>
+        <ProductDescription>{descricao}</ProductDescription>
+        <ProductServing>Serve {porcao}</ProductServing>
+      </div>
+
+      <AddButton onClick={onBuyClick}>
         Adicionar ao carrinho - R$ {preco.toFixed(2).replace('.', ',')}
-      </BuyButton>
-    </InfoContainer>
-  </ModalContentContainer>
+      </AddButton>
+    </ModalText>
+  </ModalBody>
 )
 
 export default ModalProduct

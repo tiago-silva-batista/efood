@@ -1,53 +1,55 @@
 import styled from 'styled-components'
 import { colors } from '../../styles'
 
-export const ModalContentContainer = styled.div`
+export const ModalBody = styled.div`
   display: flex;
-  gap: 24px;
-  max-width: 100%;
+  gap: 32px;
   width: 100%;
-  height: 100%;
 `
 
 export const ProductImage = styled.img`
-  width: 280px;
-  height: 280px;
-  object-fit: cover;
+  width: 320px;
+  height: auto;
 `
 
-export const InfoContainer = styled.div`
+export const ModalText = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   flex: 1;
 `
 
-export const Title = styled.h2`
-  font-size: 18px;
+export const ProductTitle = styled.h2`
+  font-size: 20px;
   font-weight: bold;
+  margin-bottom: 16px;
   color: ${colors.beige};
-  margin-bottom: 8px;
 `
 
-export const Description = styled.p`
-  padding-top: 16px;
-  padding-bottom: 16px;
+export const ProductDescription = styled.p`
   font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 16px;
   color: ${colors.beige};
-  line-height: 22px;
 `
 
-export const BuyButton = styled.button`
-  margin-top: auto;
-  width: 218px;
-  height: 24px;
-  padding: 4px;
+export const ProductServing = styled.p`
+  font-size: 14px;
+  font-weight: normal;
+  margin-bottom: 16px;
+  color: ${colors.beige};
+`
+
+export const AddButton = styled.button`
   background-color: ${colors.beige};
   color: ${colors.orange};
-  border: 1px solid transparent;
-  font-weight: bold;
   font-size: 14px;
+  font-weight: bold;
+  border: 2px solid transparent;
+  padding: 8px 16px;
   cursor: pointer;
-  transition: 0.8s ease;
+  transition: 0.3s ease;
+  align-self: flex-start;
 
   &:hover {
     background-color: ${colors.orange};

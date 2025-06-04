@@ -3,10 +3,7 @@ import { colors } from '../../styles'
 
 export const ModalOverlay = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
@@ -16,12 +13,14 @@ export const ModalOverlay = styled.div`
 
 export const ModalContent = styled.div`
   background: ${colors.orange};
-  padding: 32px;
+  padding: 24px;
   max-width: 1024px;
   width: 100%;
   color: ${colors.white};
   position: relative;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 24px;
 `
 

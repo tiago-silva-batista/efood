@@ -8,14 +8,23 @@ export const SectionContainer = styled.section`
   background-color: ${colors.lightBeige};
 `
 
-export const List = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: stretch;
+export const ListHome = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 32px 0;
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  }
+`
 
-  li {
-    flex: 1 1 320px;
-    display: flex;
+export const ListModal = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 32px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
   }
 `

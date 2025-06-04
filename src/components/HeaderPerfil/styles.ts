@@ -1,29 +1,34 @@
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
+
 import HeaderBackImage from '../../assets/images/fundo-header.png'
 import { colors } from '../../styles'
 
 export const HeaderBarPerfil = styled.header`
+  width: 100%;
   background-image: url(${HeaderBackImage});
-  background-repeat: no-repeat;
+  padding: 56px 0px;
   background-size: cover;
   background-position: center;
-  padding: 56px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-repeat: no-repeat;
 
   .header-wrapper {
+    max-width: 1024px;
+    width: 100%;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 `
 
-export const LogoImagePerfil = styled.img`
-  max-width: 125px;
+export const LogoImage = styled.img`
+  max-width: 100%;
   display: block;
   height: auto;
+  margin: 0 auto;
 `
 
 export const LinkCar = styled.a`
@@ -33,50 +38,10 @@ export const LinkCar = styled.a`
   text-decoration: none;
 `
 
-export const RestauranteLink = styled.p`
+export const RestauranteLink = styled(Link)`
   font-size: 18px;
   font-weight: bold;
   color: ${colors.orange};
-  margin: 0;
-`
-
-export const ImageBottom = styled.img`
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
-`
-
-export const BannerContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 280px;
-  overflow: hidden;
-`
-
-export const TitleContainer = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  z-index: 1;
-`
-
-export const TitleCategory = styled.h3`
-  font-size: 32px;
-  font-weight: 100;
-  color: ${colors.white};
-`
-
-export const TitleLearnMore = styled.h2`
-  font-size: 32px;
-  font-weight: bold;
-  color: ${colors.white};
+  text-decoration: none;
+  cursor: pointer;
 `

@@ -6,10 +6,10 @@ export const HeaderBar = styled.header`
   text-align: center;
   background-size: cover;
   background-position: center;
-  height: 384px;
+  height: 320px;
   display: block;
   padding-top: 40px;
-  margin-bottom: 80px;
+  margin-bottom: 40px;
   }
 `
 
@@ -18,8 +18,7 @@ export const LogoImage = styled.img`
   display: block;
   height: auto;
   margin: 0 auto;
-  cursor: pointer;
-  padding-bottom: 100px;
+  margin-bottom: 40px;
 `
 
 export const HeaderTitle = styled.h2`

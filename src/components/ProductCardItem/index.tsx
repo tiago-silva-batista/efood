@@ -1,20 +1,18 @@
-import { Card } from './styles'
+import { Card, Image, Title, Description, Button } from './styles'
+import { Produto } from '../../types'
 
 type Props = {
-  id: string
-  titulo: string
-  descricao: string
-  capa: string
-  onClick: () => void
+  produto: Produto
+  onClick?: () => void
 }
 
-const ProductCardItem = ({ titulo, descricao, capa, onClick }: Props) => {
+const ProductCardItem = ({ produto, onClick }: Props) => {
   return (
-    <Card onClick={onClick}>
-      <img src={capa} alt={titulo} />
-      <h3>{titulo}</h3>
-      <p>{descricao}</p>
-      <button>Mais detalhes</button>
+    <Card>
+      <Image src={produto.foto} alt={produto.nome} />
+      <Title>{produto.nome}</Title>
+      <Description>{produto.descricao}</Description>
+      <Button onClick={onClick}>Mais detalhes</Button>
     </Card>
   )
 }

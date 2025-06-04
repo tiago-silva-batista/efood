@@ -1,9 +1,13 @@
 export type Produto = {
   id: string
   titulo: string
-  destaque: boolean
+  destacado: boolean
   tipo: string
   avaliacao: string
   descricao: string
   capa: string
+  porcao: string
+  preco: number
+  foto: string
+  nome: string
 }

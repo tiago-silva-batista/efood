@@ -1,28 +1,36 @@
 import { useEffect, useState } from 'react'
-import ProductsCard from '../../components/ProductsCard'
+import RestaurantCard from '../../components/RestaurantCard'
+import { ListHome } from '../../components/ProductsCard/styles'
+import { Container } from '../../styles'
 
-type ProductType = {
-  id: string
+interface Restaurante {
+  id: number
   titulo: string
+  tipo: string
+  destacado: boolean
+  avaliacao: number
   descricao: string
   capa: string
-  tipo: string
-  destaque: boolean
-  avaliacao: string
-  porcao: string
-  preco: number
 }
 
-const HomePage = () => {
-  const [products, setProducts] = useState<ProductType[]>([])
+const Home = () => {
+  const [restaurantes, setRestaurantes] = useState<Restaurante[]>([])
 
   useEffect(() => {
     fetch('https://fake-api-tau.vercel.app/api/efood/restaurantes')
       .then((res) => res.json())
-      .then((data) => setProducts(data))
+      .then((data) => setRestaurantes(data))
   }, [])
 
-  return <ProductsCard products={products} />
+  return (
+    <Container>
+      <ListHome>
+        {restaurantes.map((restaurante) => (
+          <RestaurantCard key={restaurante.id} restaurante={restaurante} />
+        ))}
+      </ListHome>
+    </Container>
+  )
 }
 
-export default HomePage
+export default Home
