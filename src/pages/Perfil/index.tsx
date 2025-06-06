@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
+import { Produto } from '../../types'
+import { RootState } from '../../store'
+import { abrirCarrinho, adicionarAoCarrinho } from '../../store/reducers/cart'
+import { toast } from 'react-toastify'
+import CartSidebar from '../../components/CartSidebar'
 import ProductsCard from '../../components/ProductsCard'
 import HeaderPerfil from '../../components/HeaderPerfil'
 import RestaurantBanner from '../../components/RestaurantBanner'
@@ -8,34 +15,23 @@ import Container from '../../components/Container'
 import Modal from '../../components/Modal'
 import ModalProduct from '../../components/ModalProduct'
 
-type ProductType = {
-  id: string
-  titulo: string
-  descricao: string
-  capa: string
-  tipo: string
-  destacado: boolean
-  avaliacao: string
-  porcao: string
-  preco: number
-  foto: string
-  nome: string
-}
-
 type RestaurantType = {
   id: number
   titulo: string
   tipo: string
   capa: string
-  cardapio: ProductType[]
+  cardapio: Produto[]
 }
 
 const Perfil = () => {
   const { id } = useParams()
+  const dispatch = useDispatch()
+
   const [restaurante, setRestaurante] = useState<RestaurantType | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
-  const [produtoSelecionado, setProdutoSelecionado] =
-    useState<ProductType | null>(null)
+  const [produtoSelecionado, setProdutoSelecionado] = useState<Produto | null>(
+    null
+  )
 
   useEffect(() => {
     fetch(`https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`)
@@ -45,7 +41,7 @@ const Perfil = () => {
       })
   }, [id])
 
-  const handleOpenModal = (produto: ProductType) => {
+  const handleOpenModal = (produto: Produto) => {
     setProdutoSelecionado(produto)
     setModalOpen(true)
   }
@@ -54,6 +50,35 @@ const Perfil = () => {
     setModalOpen(false)
     setProdutoSelecionado(null)
   }
+
+  const items = useSelector((state: RootState) => state.cart.items)
+
+  const handleAddToCart = () => {
+    if (produtoSelecionado && restaurante) {
+      const itemExiste = items.some((item) => item.id === produtoSelecionado.id)
+
+      if (itemExiste) {
+        toast.warning('Item já adicionado ao carrinho')
+        fecharModal()
+        return
+      }
+      dispatch(
+        adicionarAoCarrinho({
+          id: produtoSelecionado.id,
+          nome: produtoSelecionado.nome,
+          foto: produtoSelecionado.foto,
+          preco: produtoSelecionado.preco,
+          porcao: produtoSelecionado.porcao,
+          restauranteId: restaurante.id,
+          restauranteNome: restaurante.titulo
+        })
+      )
+      dispatch(abrirCarrinho())
+      fecharModal()
+    }
+  }
+
+  const isCartOpen = useSelector((state: RootState) => state.cart.isOpen)
 
   if (!restaurante) return <p>Carregando...</p>
 
@@ -81,13 +106,11 @@ const Perfil = () => {
             descricao={produtoSelecionado.descricao}
             porcao={produtoSelecionado.porcao}
             preco={produtoSelecionado.preco}
-            onBuyClick={() => {
-              console.log('Adicionado ao carrinho:', produtoSelecionado.titulo)
-              fecharModal()
-            }}
+            onBuyClick={handleAddToCart}
           />
         </Modal>
       )}
+      <CartSidebar isVisible={isCartOpen} />
     </>
   )
 }

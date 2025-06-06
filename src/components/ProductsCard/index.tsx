@@ -4,8 +4,8 @@ import { Produto } from '../../types'
 
 type Props = {
   products: Produto[]
-  variant?: 'home' | 'modal' // <- nova prop
   onClick?: (produto: Produto) => void
+  variant?: 'home' | 'modal'
 }
 
 const ProductsCard = ({ products, variant = 'home', onClick }: Props) => {

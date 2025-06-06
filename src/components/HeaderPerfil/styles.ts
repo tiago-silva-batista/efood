@@ -36,6 +36,7 @@ export const LinkCar = styled.a`
   font-weight: bold;
   color: ${colors.orange};
   text-decoration: none;
+  cursor: pointer;
 `
 
 export const RestauranteLink = styled(Link)`

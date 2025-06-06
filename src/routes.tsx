@@ -7,7 +7,6 @@ import Perfil from './pages/Perfil'
 
 import Footer from './components/Footer'
 import Header from './components/Header'
-// import HeaderPerfil from './components/HeaderPerfil'
 
 const Rotas = () => (
   <Routes>

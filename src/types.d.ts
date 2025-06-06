@@ -11,3 +11,13 @@ export type Produto = {
   foto: string
   nome: string
 }
+
+export type ProdutoNoCarrinho = {
+  id: string
+  nome: string
+  foto: string
+  preco: number
+  porcao: string
+  restauranteId: number
+  restauranteNome: string
+}

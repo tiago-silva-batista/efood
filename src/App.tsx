@@ -1,5 +1,6 @@
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 
 import { store } from './store'
 import { GlobalCss } from './styles'
@@ -12,6 +13,7 @@ function App() {
       <BrowserRouter>
         <GlobalCss />
         <Rotas />
+        <ToastContainer />
       </BrowserRouter>
     </Provider>
   )
