@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 
 import { Produto } from '../../types'
 import { RootState } from '../../store'
-import { abrirCarrinho, adicionarAoCarrinho } from '../../store/reducers/cart'
-import { toast } from 'react-toastify'
+import {
+  abrirCarrinho,
+  adicionarAoCarrinho,
+  fecharCarrinho
+} from '../../store/reducers/cart'
+
 import CartSidebar from '../../components/CartSidebar'
 import ProductsCard from '../../components/ProductsCard'
 import HeaderPerfil from '../../components/HeaderPerfil'
@@ -32,6 +36,10 @@ const Perfil = () => {
   const [produtoSelecionado, setProdutoSelecionado] = useState<Produto | null>(
     null
   )
+  const [stepCarrinho, setStepCarrinho] = useState<'cart' | 'delivery'>('cart')
+
+  const isCartOpen = useSelector((state: RootState) => state.cart.isOpen)
+  const items = useSelector((state: RootState) => state.cart.items)
 
   useEffect(() => {
     fetch(`https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`)
@@ -40,6 +48,12 @@ const Perfil = () => {
         setRestaurante(data)
       })
   }, [id])
+
+  useEffect(() => {
+    if (isCartOpen) {
+      setStepCarrinho('cart') // Sempre reseta para 'cart' ao abrir o carrinho
+    }
+  }, [isCartOpen])
 
   const handleOpenModal = (produto: Produto) => {
     setProdutoSelecionado(produto)
@@ -51,8 +65,6 @@ const Perfil = () => {
     setProdutoSelecionado(null)
   }
 
-  const items = useSelector((state: RootState) => state.cart.items)
-
   const handleAddToCart = () => {
     if (produtoSelecionado && restaurante) {
       const itemExiste = items.some((item) => item.id === produtoSelecionado.id)
@@ -62,6 +74,7 @@ const Perfil = () => {
         fecharModal()
         return
       }
+
       dispatch(
         adicionarAoCarrinho({
           id: produtoSelecionado.id,
@@ -73,12 +86,11 @@ const Perfil = () => {
           restauranteNome: restaurante.titulo
         })
       )
+
       dispatch(abrirCarrinho())
       fecharModal()
     }
   }
-
-  const isCartOpen = useSelector((state: RootState) => state.cart.isOpen)
 
   if (!restaurante) return <p>Carregando...</p>
 
@@ -110,7 +122,16 @@ const Perfil = () => {
           />
         </Modal>
       )}
-      <CartSidebar isVisible={isCartOpen} />
+
+      <CartSidebar
+        isVisible={isCartOpen}
+        step={stepCarrinho}
+        onChangeStep={setStepCarrinho}
+        onClose={() => {
+          setStepCarrinho('cart') // resetar sempre ao fechar
+          dispatch(fecharCarrinho())
+        }}
+      />
     </>
   )
 }

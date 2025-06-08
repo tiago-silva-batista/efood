@@ -1,13 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProdutoNoCarrinho } from '../../types'
 
+type Etapa = 'cart' | 'delivery'
+
 type CartState = {
   items: ProdutoNoCarrinho[]
+  isOpen: boolean
+  step: Etapa
 }
 
-const initialState = {
-  items: [] as ProdutoNoCarrinho[],
-  isOpen: false
+const initialState: CartState = {
+  items: [],
+  isOpen: false,
+  step: 'cart' // nova propriedade
 }
 
 const cartSlice = createSlice({
@@ -22,14 +27,23 @@ const cartSlice = createSlice({
     },
     fecharCarrinho: (state) => {
       state.isOpen = false
+      state.step = 'cart'
     },
     remove: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload)
+    },
+    mudarEtapa: (state, action: PayloadAction<Etapa>) => {
+      state.step = action.payload
     }
   }
 })
 
-export const { adicionarAoCarrinho, abrirCarrinho, fecharCarrinho, remove } =
-  cartSlice.actions
+export const {
+  adicionarAoCarrinho,
+  abrirCarrinho,
+  fecharCarrinho,
+  remove,
+  mudarEtapa
+} = cartSlice.actions
 
 export default cartSlice.reducer
