@@ -12,11 +12,23 @@ import {
 
 type Props = {
   onBack: () => void
-  onContinue: () => void
+  onConfirm: () => void
   total: number
+  cart: {
+    id: number
+    nome: string
+    preco: number
+    quantidade: number
+  }[]
+  address: {
+    rua: string
+    numero: string
+    cidade: string
+    cep: string
+  }
 }
 
-const PaymentForm = ({ onBack, onContinue, total }: Props) => {
+const PaymentForm = ({ onBack, onConfirm, total }: Props) => {
   const [nome, setNome] = useState('')
   const [numero, setNumero] = useState('')
   const [cvv, setCvv] = useState('')
@@ -27,13 +39,6 @@ const PaymentForm = ({ onBack, onContinue, total }: Props) => {
     value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')
 
   const handleOnlyNumbers = (value: string) => value.replace(/\D/g, '')
-
-  const isFormValid =
-    nome.trim().length > 0 &&
-    numero.trim().length > 13 &&
-    cvv.trim().length === 3 &&
-    mes.trim().length > 0 &&
-    ano.trim().length > 0
 
   return (
     <Container>
@@ -97,9 +102,7 @@ const PaymentForm = ({ onBack, onContinue, total }: Props) => {
           </div>
         </Row>
 
-        <Button disabled={!isFormValid} onClick={onContinue}>
-          Finalizar pagamento
-        </Button>
+        <Button onClick={onConfirm}>Finalizar pagamento</Button>
         <Button onClick={onBack}>Voltar para a edição de endereço</Button>
       </Sidebar>
     </Container>

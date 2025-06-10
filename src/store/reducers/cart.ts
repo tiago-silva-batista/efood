@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProdutoNoCarrinho } from '../../types'
 
-export type Etapa = 'cart' | 'delivery' | 'payment'
+export type Etapa = 'cart' | 'delivery' | 'payment' | 'confirmation'
 
 type CartState = {
   items: ProdutoNoCarrinho[]

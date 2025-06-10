@@ -16,11 +16,13 @@ import {
 
 import DeliveryForm from '../DeliveryForm'
 import PaymentForm from '../PaymentForm'
+import { useState } from 'react'
+import ConfirmationScreen from '../OrderConfirmationModal'
 
 type Props = {
   isVisible: boolean
-  step: 'cart' | 'delivery' | 'payment'
-  onChangeStep: (step: 'cart' | 'delivery' | 'payment') => void
+  step: 'cart' | 'delivery' | 'payment' | 'confirmation'
+  onChangeStep: (step: 'cart' | 'delivery' | 'payment' | 'confirmation') => void
   onClose: () => void
 }
 
@@ -28,6 +30,13 @@ const CartSidebar = ({ isVisible, step, onChangeStep, onClose }: Props) => {
   const items = useSelector((state: RootState) => state.cart.items)
   const dispatch = useDispatch()
   const total = items.reduce((acc, item) => acc + item.preco, 0)
+
+  const [address, setAddress] = useState({
+    rua: '',
+    numero: '',
+    cidade: '',
+    cep: ''
+  })
 
   useEffect(() => {
     if (items.length === 0) {
@@ -71,16 +80,35 @@ const CartSidebar = ({ isVisible, step, onChangeStep, onClose }: Props) => {
           <DeliveryForm
             onBack={() => onChangeStep('cart')}
             onContinue={() => onChangeStep('payment')}
+            onSaveAddress={(dados) => setAddress(dados)}
           />
         )}
 
         {step === 'payment' && (
           <PaymentForm
             onBack={() => onChangeStep('delivery')}
-            onContinue={() => {
-              console.log('Pagamento finalizado')
-            }}
+            onConfirm={() => onChangeStep('confirmation')}
             total={total}
+            address={address}
+            cart={items.map((item) => ({
+              id: Number(item.id),
+              nome: item.nome,
+              preco: item.preco,
+              quantidade: 1
+            }))}
+          />
+        )}
+        {step === 'confirmation' && (
+          <ConfirmationScreen
+            cart={items.map((item) => ({
+              id: Number(item.id),
+              nome: item.nome,
+              preco: item.preco,
+              quantidade: 1
+            }))}
+            address={`${address.rua}, ${address.numero}, ${address.cidade}, ${address.cep}`}
+            total={total}
+            onClose={onClose}
           />
         )}
       </Sidebar>

@@ -4,9 +4,15 @@ import { Container, Sidebar, Title, Label, Input, Row, Button } from './styles'
 type Props = {
   onBack: () => void
   onContinue: () => void
+  onSaveAddress: (address: {
+    rua: string
+    numero: string
+    cidade: string
+    cep: string
+  }) => void
 }
 
-const DeliveryForm = ({ onBack, onContinue }: Props) => {
+const DeliveryForm = ({ onBack, onContinue, onSaveAddress }: Props) => {
   const [nome, setNome] = useState('')
   const [endereco, setEndereco] = useState('')
   const [cidade, setCidade] = useState('')
@@ -87,6 +93,7 @@ const DeliveryForm = ({ onBack, onContinue }: Props) => {
 
         <Button
           onClick={() => {
+            onSaveAddress({ rua: endereco, numero, cidade, cep })
             onContinue()
           }}
         >
