@@ -88,10 +88,10 @@ export const Total = styled.div`
 export const CheckoutButton = styled.button`
   background-color: ${colors.beige};
   color: ${colors.orange};
-  padding: 8px;
+  padding: 4px;
   width: 100%;
   font-weight: bold;
-  margin-top: 16px;
+  margin-top: 8px;
   border: 2px solid transparent;
   transition: 0.3s ease;
   cursor: pointer;

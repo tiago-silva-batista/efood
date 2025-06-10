@@ -85,10 +85,20 @@ const DeliveryForm = ({ onBack, onContinue }: Props) => {
           onChange={(e) => setComplemento(e.target.value)}
         />
 
-        <Button disabled={!isFormValid} onClick={onContinue}>
+        <Button
+          onClick={() => {
+            onContinue()
+          }}
+        >
           Continuar com o pagamento
         </Button>
-        <Button onClick={onBack}>Voltar para o carrinho</Button>
+        <Button
+          onClick={() => {
+            onBack()
+          }}
+        >
+          Voltar para o carrinho
+        </Button>
       </Sidebar>
     </Container>
   )

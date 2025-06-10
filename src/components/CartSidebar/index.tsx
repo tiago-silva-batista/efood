@@ -15,11 +15,12 @@ import {
 } from './styles'
 
 import DeliveryForm from '../DeliveryForm'
+import PaymentForm from '../PaymentForm'
 
 type Props = {
   isVisible: boolean
-  step: 'cart' | 'delivery'
-  onChangeStep: (step: 'cart' | 'delivery') => void
+  step: 'cart' | 'delivery' | 'payment'
+  onChangeStep: (step: 'cart' | 'delivery' | 'payment') => void
   onClose: () => void
 }
 
@@ -44,7 +45,7 @@ const CartSidebar = ({ isVisible, step, onChangeStep, onClose }: Props) => {
     <>
       {isVisible && <Overlay onClick={handleOverlayClick} />}
       <Sidebar isVisible={isVisible}>
-        {step === 'cart' ? (
+        {step === 'cart' && (
           <>
             {items.map((item) => (
               <CartItem key={item.id}>
@@ -64,10 +65,22 @@ const CartSidebar = ({ isVisible, step, onChangeStep, onClose }: Props) => {
               Continuar com a entrega
             </CheckoutButton>
           </>
-        ) : (
+        )}
+
+        {step === 'delivery' && (
           <DeliveryForm
             onBack={() => onChangeStep('cart')}
-            onContinue={() => alert('Ir para pagamento')}
+            onContinue={() => onChangeStep('payment')}
+          />
+        )}
+
+        {step === 'payment' && (
+          <PaymentForm
+            onBack={() => onChangeStep('delivery')}
+            onContinue={() => {
+              console.log('Pagamento finalizado')
+            }}
+            total={total}
           />
         )}
       </Sidebar>

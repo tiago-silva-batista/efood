@@ -36,7 +36,9 @@ const Perfil = () => {
   const [produtoSelecionado, setProdutoSelecionado] = useState<Produto | null>(
     null
   )
-  const [stepCarrinho, setStepCarrinho] = useState<'cart' | 'delivery'>('cart')
+  const [stepCarrinho, setStepCarrinho] = useState<
+    'cart' | 'delivery' | 'payment'
+  >('cart')
 
   const isCartOpen = useSelector((state: RootState) => state.cart.isOpen)
   const items = useSelector((state: RootState) => state.cart.items)
@@ -48,6 +50,10 @@ const Perfil = () => {
         setRestaurante(data)
       })
   }, [id])
+
+  useEffect(() => {
+    console.log('Etapa atual:', stepCarrinho)
+  }, [stepCarrinho])
 
   useEffect(() => {
     if (isCartOpen) {

@@ -10,9 +10,9 @@ export const Container = styled.div`
 
 export const Sidebar = styled.aside`
   background-color: ${colors.orange};
-  width: 360px;
-  padding: 0;
   color: ${colors.beige};
+  padding: 0;
+  width: 360px;
 `
 
 export const Title = styled.h2`
@@ -39,9 +39,15 @@ export const Input = styled.input`
 export const Row = styled.div`
   display: flex;
   gap: 8px;
+`
 
-  > div {
-    flex: 1;
+export const Col = styled.div<{ flex?: number }>`
+  flex: ${(props) => props.flex ?? 1};
+  display: flex;
+  flex-direction: column;
+
+  input {
+    width: 100%;
   }
 `
 
