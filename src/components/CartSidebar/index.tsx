@@ -17,7 +17,7 @@ import {
 import DeliveryForm from '../DeliveryForm'
 import PaymentForm from '../PaymentForm'
 import { useState } from 'react'
-import ConfirmationScreen from '../OrderConfirmationModal'
+import ConfirmationScreen from '../Confirmation'
 
 type Props = {
   isVisible: boolean
@@ -52,66 +52,70 @@ const CartSidebar = ({ isVisible, step, onChangeStep, onClose }: Props) => {
 
   return (
     <>
-      {isVisible && <Overlay onClick={handleOverlayClick} />}
-      <Sidebar isVisible={isVisible}>
-        {step === 'cart' && (
-          <>
-            {items.map((item) => (
-              <CartItem key={item.id}>
-                <ProductImage src={item.foto} alt={item.nome} />
-                <ProductInfo>
-                  <h3>{item.nome}</h3>
-                  <p>R$ {item.preco.toFixed(2).replace('.', ',')}</p>
-                </ProductInfo>
-                <RemoveButton onClick={() => dispatch(remove(item.id))} />
-              </CartItem>
-            ))}
-            <Total>
-              <span>Valor total</span>
-              <strong>R$ {total.toFixed(2).replace('.', ',')}</strong>
-            </Total>
-            <CheckoutButton onClick={() => onChangeStep('delivery')}>
-              Continuar com a entrega
-            </CheckoutButton>
-          </>
-        )}
+      {isVisible && step !== 'confirmation' && (
+        <Overlay onClick={handleOverlayClick} />
+      )}
 
-        {step === 'delivery' && (
-          <DeliveryForm
-            onBack={() => onChangeStep('cart')}
-            onContinue={() => onChangeStep('payment')}
-            onSaveAddress={(dados) => setAddress(dados)}
-          />
-        )}
+      {step === 'confirmation' ? (
+        <ConfirmationScreen
+          cart={items.map((item) => ({
+            id: Number(item.id),
+            nome: item.nome,
+            preco: item.preco,
+            quantidade: 1
+          }))}
+          address={`${address.rua}, ${address.numero}, ${address.cidade}, ${address.cep}`}
+          total={total}
+          onClose={onClose}
+        />
+      ) : (
+        <Sidebar isVisible={isVisible}>
+          {step === 'cart' && (
+            <>
+              {items.map((item) => (
+                <CartItem key={item.id}>
+                  <ProductImage src={item.foto} alt={item.nome} />
+                  <ProductInfo>
+                    <h3>{item.nome}</h3>
+                    <p>R$ {item.preco.toFixed(2).replace('.', ',')}</p>
+                  </ProductInfo>
+                  <RemoveButton onClick={() => dispatch(remove(item.id))} />
+                </CartItem>
+              ))}
+              <Total>
+                <span>Valor total</span>
+                <strong>R$ {total.toFixed(2).replace('.', ',')}</strong>
+              </Total>
+              <CheckoutButton onClick={() => onChangeStep('delivery')}>
+                Continuar com a entrega
+              </CheckoutButton>
+            </>
+          )}
 
-        {step === 'payment' && (
-          <PaymentForm
-            onBack={() => onChangeStep('delivery')}
-            onConfirm={() => onChangeStep('confirmation')}
-            total={total}
-            address={address}
-            cart={items.map((item) => ({
-              id: Number(item.id),
-              nome: item.nome,
-              preco: item.preco,
-              quantidade: 1
-            }))}
-          />
-        )}
-        {step === 'confirmation' && (
-          <ConfirmationScreen
-            cart={items.map((item) => ({
-              id: Number(item.id),
-              nome: item.nome,
-              preco: item.preco,
-              quantidade: 1
-            }))}
-            address={`${address.rua}, ${address.numero}, ${address.cidade}, ${address.cep}`}
-            total={total}
-            onClose={onClose}
-          />
-        )}
-      </Sidebar>
+          {step === 'delivery' && (
+            <DeliveryForm
+              onBack={() => onChangeStep('cart')}
+              onContinue={() => onChangeStep('payment')}
+              onSaveAddress={(dados) => setAddress(dados)}
+            />
+          )}
+
+          {step === 'payment' && (
+            <PaymentForm
+              onBack={() => onChangeStep('delivery')}
+              onConfirm={() => onChangeStep('confirmation')}
+              total={total}
+              address={address}
+              cart={items.map((item) => ({
+                id: Number(item.id),
+                nome: item.nome,
+                preco: item.preco,
+                quantidade: 1
+              }))}
+            />
+          )}
+        </Sidebar>
+      )}
     </>
   )
 }

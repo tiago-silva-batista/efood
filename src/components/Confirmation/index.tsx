@@ -1,4 +1,6 @@
-import styled from 'styled-components'
+import ReactDOM from 'react-dom'
+
+import close from '../../assets/images/close.png'
 
 import {
   Modal,
@@ -22,10 +24,11 @@ type Props = {
 }
 
 const ConfirmationScreen = ({ cart, address, total, onClose }: Props) => {
-  return (
+  const modalContent = (
     <Overlay>
       <Modal>
-        <CloseButton onClick={onClose}>×</CloseButton>
+        <CloseButton src={close} alt="Fechar" onClick={onClose} />
+
         <Title>Confirmação do Pedido</Title>
         <Text>Confira as informações do pedido antes de finalizar.</Text>
 
@@ -58,6 +61,11 @@ const ConfirmationScreen = ({ cart, address, total, onClose }: Props) => {
         </ConfirmButton>
       </Modal>
     </Overlay>
+  )
+
+  return ReactDOM.createPortal(
+    modalContent,
+    document.getElementById('modal-root')!
   )
 }
 

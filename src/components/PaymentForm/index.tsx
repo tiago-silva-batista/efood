@@ -39,7 +39,6 @@ const PaymentForm = ({ onBack, onConfirm, total }: Props) => {
     value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')
 
   const handleOnlyNumbers = (value: string) => value.replace(/\D/g, '')
-
   return (
     <Container>
       <Sidebar>
