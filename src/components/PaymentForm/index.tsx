@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import axios from 'axios'
+
 import {
   Container,
   Sidebar,
@@ -12,23 +14,23 @@ import {
 
 type Props = {
   onBack: () => void
-  onConfirm: () => void
+  onConfirm: (orderId: number) => void
   total: number
-  cart: {
-    id: number
-    nome: string
-    preco: number
-    quantidade: number
-  }[]
   address: {
     rua: string
     numero: string
     cidade: string
     cep: string
   }
+  cart: {
+    id: number
+    nome: string
+    preco: number
+    quantidade: number
+  }[]
 }
 
-const PaymentForm = ({ onBack, onConfirm, total }: Props) => {
+const PaymentForm = ({ onBack, onConfirm, total, cart, address }: Props) => {
   const [nome, setNome] = useState('')
   const [numero, setNumero] = useState('')
   const [cvv, setCvv] = useState('')
@@ -39,6 +41,48 @@ const PaymentForm = ({ onBack, onConfirm, total }: Props) => {
     value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')
 
   const handleOnlyNumbers = (value: string) => value.replace(/\D/g, '')
+
+  const handleConfirm = async () => {
+    try {
+      const response = await axios.post(
+        'https://fake-api-tau.vercel.app/api/efood/checkout',
+        {
+          products: cart.map((item) => ({
+            id: item.id,
+            price: item.preco
+          })),
+          delivery: {
+            receiver: 'Nome do Cliente', // opcionalmente dinâmico
+            address: {
+              description: address.rua,
+              city: address.cidade,
+              zipCode: address.cep,
+              number: Number(address.numero),
+              complement: ''
+            }
+          },
+          payment: {
+            card: {
+              name: nome,
+              number: numero,
+              code: Number(cvv),
+              expires: {
+                month: Number(mes),
+                year: Number('20' + ano) // exemplo: "25" vira 2025
+              }
+            }
+          }
+        }
+      )
+
+      const orderId = response.data.orderId
+      onConfirm(orderId)
+    } catch (error) {
+      alert('Erro ao finalizar pedido.')
+      console.error(error)
+    }
+  }
+
   return (
     <Container>
       <Sidebar>
@@ -101,7 +145,7 @@ const PaymentForm = ({ onBack, onConfirm, total }: Props) => {
           </div>
         </Row>
 
-        <Button onClick={onConfirm}>Finalizar pagamento</Button>
+        <Button onClick={handleConfirm}>Finalizar pagamento</Button>
         <Button onClick={onBack}>Voltar para a edição de endereço</Button>
       </Sidebar>
     </Container>

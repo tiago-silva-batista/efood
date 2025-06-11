@@ -53,6 +53,7 @@ export const ConfirmButton = styled.button`
   font-weight: bold;
   width: 50%;
   padding: 4px;
+  font-size: 14px;
   border: 2px solid transparent;
   transition: 0.3s ease;
   margin-top: 8px;

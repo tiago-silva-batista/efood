@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProdutoNoCarrinho } from '../../types'
 
-export type Etapa = 'cart' | 'delivery' | 'payment' | 'confirmation'
+export type Etapa =
+  | 'cart'
+  | 'delivery'
+  | 'payment'
+  | 'confirmation'
+  | 'confirmationScreen'
 
 type CartState = {
   items: ProdutoNoCarrinho[]
@@ -34,6 +39,9 @@ const cartSlice = createSlice({
     },
     mudarEtapa: (state, action: PayloadAction<Etapa>) => {
       state.step = action.payload
+    },
+    limpar: (state) => {
+      state.items = []
     }
   }
 })
@@ -43,7 +51,8 @@ export const {
   abrirCarrinho,
   fecharCarrinho,
   remove,
-  mudarEtapa
+  mudarEtapa,
+  limpar
 } = cartSlice.actions
 
 export default cartSlice.reducer

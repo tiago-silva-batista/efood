@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { RootState } from '../../store'
 import { remove } from '../../store/reducers/cart'
+import { useState } from 'react'
 
 import {
   Sidebar,
@@ -16,13 +17,20 @@ import {
 
 import DeliveryForm from '../DeliveryForm'
 import PaymentForm from '../PaymentForm'
-import { useState } from 'react'
-import ConfirmationScreen from '../Confirmation'
+import Confirmation from '../Confirmation'
+import ConfirmationScreen from '../ConfirmationScreen'
+
+type Step =
+  | 'cart'
+  | 'delivery'
+  | 'payment'
+  | 'confirmation'
+  | 'confirmationScreen'
 
 type Props = {
   isVisible: boolean
-  step: 'cart' | 'delivery' | 'payment' | 'confirmation'
-  onChangeStep: (step: 'cart' | 'delivery' | 'payment' | 'confirmation') => void
+  step: Step
+  onChangeStep: (step: Step) => void
   onClose: () => void
 }
 
@@ -37,6 +45,8 @@ const CartSidebar = ({ isVisible, step, onChangeStep, onClose }: Props) => {
     cidade: '',
     cep: ''
   })
+
+  const [orderId, setOrderId] = useState<number | null>(null)
 
   useEffect(() => {
     if (items.length === 0) {
@@ -56,8 +66,10 @@ const CartSidebar = ({ isVisible, step, onChangeStep, onClose }: Props) => {
         <Overlay onClick={handleOverlayClick} />
       )}
 
-      {step === 'confirmation' ? (
-        <ConfirmationScreen
+      {step === 'confirmationScreen' ? (
+        <ConfirmationScreen orderId={orderId} onClose={onClose} />
+      ) : step === 'confirmation' ? (
+        <Confirmation
           cart={items.map((item) => ({
             id: Number(item.id),
             nome: item.nome,
@@ -66,7 +78,9 @@ const CartSidebar = ({ isVisible, step, onChangeStep, onClose }: Props) => {
           }))}
           address={`${address.rua}, ${address.numero}, ${address.cidade}, ${address.cep}`}
           total={total}
+          orderId={orderId}
           onClose={onClose}
+          onConfirm={() => onChangeStep('confirmationScreen')}
         />
       ) : (
         <Sidebar isVisible={isVisible}>
@@ -103,7 +117,10 @@ const CartSidebar = ({ isVisible, step, onChangeStep, onClose }: Props) => {
           {step === 'payment' && (
             <PaymentForm
               onBack={() => onChangeStep('delivery')}
-              onConfirm={() => onChangeStep('confirmation')}
+              onConfirm={(generatedOrderId) => {
+                setOrderId(generatedOrderId)
+                onChangeStep('confirmation')
+              }}
               total={total}
               address={address}
               cart={items.map((item) => ({

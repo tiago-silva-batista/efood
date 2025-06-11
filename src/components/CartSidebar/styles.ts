@@ -59,7 +59,7 @@ export const ProductInfo = styled.div`
   }
 
   p {
-    font-size: 14px;
+    font-size: 16px;
     margin: auto 0;
   }
 `
@@ -91,6 +91,7 @@ export const CheckoutButton = styled.button`
   padding: 4px;
   width: 100%;
   font-weight: bold;
+  font-size: 14px;
   margin-top: 8px;
   border: 2px solid transparent;
   transition: 0.3s ease;

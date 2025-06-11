@@ -1,5 +1,3 @@
-import ReactDOM from 'react-dom'
-
 import close from '../../assets/images/close.png'
 
 import {
@@ -20,11 +18,13 @@ type Props = {
   }[]
   total: number
   address?: string
+  orderId: number | null
   onClose: () => void
+  onConfirm: () => void
 }
 
-const ConfirmationScreen = ({ cart, address, total, onClose }: Props) => {
-  const modalContent = (
+const Confirmation = ({ cart, address, total, onClose, onConfirm }: Props) => {
+  return (
     <Overlay>
       <Modal>
         <CloseButton src={close} alt="Fechar" onClick={onClose} />
@@ -56,17 +56,12 @@ const ConfirmationScreen = ({ cart, address, total, onClose }: Props) => {
 
         <Text>Total: R$ {total.toFixed(2)}</Text>
 
-        <ConfirmButton onClick={onClose}>
+        <ConfirmButton onClick={onConfirm}>
           Confirmar e finalizar pedido
         </ConfirmButton>
       </Modal>
     </Overlay>
   )
-
-  return ReactDOM.createPortal(
-    modalContent,
-    document.getElementById('modal-root')!
-  )
 }
 
-export default ConfirmationScreen
+export default Confirmation

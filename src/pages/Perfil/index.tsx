@@ -37,7 +37,7 @@ const Perfil = () => {
     null
   )
   const [stepCarrinho, setStepCarrinho] = useState<
-    'cart' | 'delivery' | 'payment' | 'confirmation'
+    'cart' | 'delivery' | 'payment' | 'confirmation' | 'confirmationScreen'
   >('cart')
 
   const isCartOpen = useSelector((state: RootState) => state.cart.isOpen)

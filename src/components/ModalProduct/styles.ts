@@ -46,7 +46,7 @@ export const AddButton = styled.button`
   font-size: 14px;
   font-weight: bold;
   border: 2px solid transparent;
-  padding: 8px 16px;
+  padding: 4px 16px;
   cursor: pointer;
   transition: 0.3s ease;
   align-self: flex-start;
