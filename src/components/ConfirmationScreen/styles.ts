@@ -3,8 +3,8 @@ import { colors } from '../../styles'
 
 export const Sidebar = styled.aside`
   background-color: ${colors.orange};
-  padding: 32px;
-  color: white;
+  padding: 16px;
+  color: ${colors.beige};
   width: 360px;
   position: fixed;
   top: 0;
