@@ -1,7 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import data from './_data.json'
+import data from '../_data.json'
 
-// GET /api/restaurantes
 export default function handler(req: VercelRequest, res: VercelResponse) {
   try {
     if (req.method !== 'GET') {
@@ -10,14 +9,9 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const { id } = req.query
-
-    if (id) {
-      const one = data.restaurantes.find((r) => String(r.id) === String(id))
-      if (!one) return res.status(404).json({ message: 'Not found' })
-      return res.status(200).json(one)
-    }
-
-    return res.status(200).json(data.restaurantes)
+    const one = data.restaurantes.find((r) => String(r.id) === String(id))
+    if (!one) return res.status(404).json({ message: 'Not found' })
+    return res.status(200).json(one)
   } catch (e) {
     console.error(e)
     return res.status(500).json({ message: 'Internal error' })

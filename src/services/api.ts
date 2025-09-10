@@ -22,7 +22,8 @@ const API_BASE =
 const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: API_BASE
+    baseUrl:
+      process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : '/api'
   }),
   endpoints: (builder) => ({
     // GET /restaurantes
