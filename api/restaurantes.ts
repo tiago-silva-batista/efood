@@ -1,8 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import data from './_data.json'
 
-// GET /api/restaurantes
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export default (req: VercelRequest, res: VercelResponse) {
   try {
     if (req.method !== 'GET') {
       res.setHeader('Allow', 'GET')
