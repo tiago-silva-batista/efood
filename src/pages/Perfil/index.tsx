@@ -1,4 +1,3 @@
-// src/pages/Perfil/index.tsx
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,21 +20,21 @@ import Modal from '../../components/Modal'
 import ModalProduct from '../../components/ModalProduct'
 
 type RestaurantType = {
-  id: number
+  id: number | string
   titulo: string
   tipo: string
   capa: string
   cardapio: Produto[]
 }
 
-const API_BASE =
-  process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : '/api'
-
-export default function Perfil() {
+const Perfil = () => {
   const { id } = useParams<{ id: string }>()
   const dispatch = useDispatch()
 
   const [restaurante, setRestaurante] = useState<RestaurantType | null>(null)
+  const [erro, setErro] = useState<string | null>(null)
+  const [carregando, setCarregando] = useState(true)
+
   const [modalOpen, setModalOpen] = useState(false)
   const [produtoSelecionado, setProdutoSelecionado] = useState<Produto | null>(
     null
@@ -43,30 +42,23 @@ export default function Perfil() {
   const [stepCarrinho, setStepCarrinho] = useState<
     'cart' | 'delivery' | 'payment' | 'confirmation' | 'confirmationScreen'
   >('cart')
-  const [loading, setLoading] = useState(true)
-  const [erro, setErro] = useState<string | null>(null)
 
-  const isCartOpen = useSelector((s: RootState) => s.cart.isOpen)
-  const items = useSelector((s: RootState) => s.cart.items)
+  const isCartOpen = useSelector((state: RootState) => state.cart.isOpen)
+  const items = useSelector((state: RootState) => state.cart.items)
 
   useEffect(() => {
     if (!id) return
-    setLoading(true)
+    setCarregando(true)
     setErro(null)
 
-    // json-server v1: usar query (?id=) e pegar o primeiro item
-    const url = `${API_BASE}/restaurantes?id=${encodeURIComponent(id)}`
-    fetch(url)
+    fetch(`/api/restaurantes/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         return res.json()
       })
-      .then((arr: RestaurantType[]) => {
-        setRestaurante(arr?.[0] ?? null)
-        if (!arr?.[0]) setErro('Restaurante não encontrado')
-      })
+      .then((data: RestaurantType) => setRestaurante(data))
       .catch((e) => setErro(e.message))
-      .finally(() => setLoading(false))
+      .finally(() => setCarregando(false))
   }, [id])
 
   useEffect(() => {
@@ -85,11 +77,14 @@ export default function Perfil() {
 
   const handleAddToCart = () => {
     if (!produtoSelecionado || !restaurante) return
-    const itemExiste = items.some((i) => i.id === produtoSelecionado.id)
+
+    const itemExiste = items.some((item) => item.id === produtoSelecionado.id)
     if (itemExiste) {
       toast.warning('Item já adicionado ao carrinho')
-      return fecharModal()
+      fecharModal()
+      return
     }
+
     dispatch(
       adicionarAoCarrinho({
         id: produtoSelecionado.id,
@@ -97,17 +92,21 @@ export default function Perfil() {
         foto: produtoSelecionado.foto,
         preco: produtoSelecionado.preco,
         porcao: produtoSelecionado.porcao,
-        restauranteId: restaurante.id,
+        restauranteId: Number(restaurante.id),
         restauranteNome: restaurante.titulo
       })
     )
+
     dispatch(abrirCarrinho())
     fecharModal()
   }
 
-  if (loading) return <Container>Carregando…</Container>
-  if (erro) return <Container>Erro: {erro}</Container>
-  if (!restaurante) return <Container>Restaurante não encontrado.</Container>
+  if (carregando) return <p>Carregando…</p>
+  if (erro)
+    return (
+      <p>Erro: {erro === 'HTTP 404' ? 'Restaurante não encontrado' : erro}</p>
+    )
+  if (!restaurante) return <p>Restaurante não encontrado</p>
 
   return (
     <>
@@ -150,3 +149,5 @@ export default function Perfil() {
     </>
   )
 }
+
+export default Perfil
