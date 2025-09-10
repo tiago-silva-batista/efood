@@ -22,7 +22,7 @@ const api = createApi({
     }),
 
     // endpoint de checkout/finalização do pedido
-    finalizeOrder: builder.mutation<{ orderId: string }, any>({
+    finalizeOrder: builder.mutation<{ orderId: string }, CheckoutPayload>({
       query: (body) => ({
         url: 'checkout',
         method: 'POST',

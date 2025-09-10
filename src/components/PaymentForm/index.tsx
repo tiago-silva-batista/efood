@@ -95,7 +95,7 @@ const PaymentForm = ({ onBack, onConfirm, total, cart, address }: Props) => {
       }
 
       const res = await finalizeOrder(payload).unwrap()
-      const orderId = Number(res.id)
+      const orderId = Number(res.orderId)
       onConfirm(orderId)
     } catch (error) {
       alert('Erro ao finalizar pedido.')
