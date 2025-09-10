@@ -1,3 +1,4 @@
+// src/pages/Perfil/index.tsx
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,8 +28,11 @@ type RestaurantType = {
   cardapio: Produto[]
 }
 
-const Perfil = () => {
-  const { id } = useParams()
+const API_BASE =
+  process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : '/api'
+
+export default function Perfil() {
+  const { id } = useParams<{ id: string }>()
   const dispatch = useDispatch()
 
   const [restaurante, setRestaurante] = useState<RestaurantType | null>(null)
@@ -39,26 +43,34 @@ const Perfil = () => {
   const [stepCarrinho, setStepCarrinho] = useState<
     'cart' | 'delivery' | 'payment' | 'confirmation' | 'confirmationScreen'
   >('cart')
+  const [loading, setLoading] = useState(true)
+  const [erro, setErro] = useState<string | null>(null)
 
-  const isCartOpen = useSelector((state: RootState) => state.cart.isOpen)
-  const items = useSelector((state: RootState) => state.cart.items)
+  const isCartOpen = useSelector((s: RootState) => s.cart.isOpen)
+  const items = useSelector((s: RootState) => s.cart.items)
 
   useEffect(() => {
-    fetch(`https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setRestaurante(data)
+    if (!id) return
+    setLoading(true)
+    setErro(null)
+
+    // json-server v1: usar query (?id=) e pegar o primeiro item
+    const url = `${API_BASE}/restaurantes?id=${encodeURIComponent(id)}`
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        return res.json()
       })
+      .then((arr: RestaurantType[]) => {
+        setRestaurante(arr?.[0] ?? null)
+        if (!arr?.[0]) setErro('Restaurante não encontrado')
+      })
+      .catch((e) => setErro(e.message))
+      .finally(() => setLoading(false))
   }, [id])
 
   useEffect(() => {
-    console.log('Etapa atual:', stepCarrinho)
-  }, [stepCarrinho])
-
-  useEffect(() => {
-    if (isCartOpen) {
-      setStepCarrinho('cart') // Sempre reseta para 'cart' ao abrir o carrinho
-    }
+    if (isCartOpen) setStepCarrinho('cart')
   }, [isCartOpen])
 
   const handleOpenModal = (produto: Produto) => {
@@ -72,33 +84,30 @@ const Perfil = () => {
   }
 
   const handleAddToCart = () => {
-    if (produtoSelecionado && restaurante) {
-      const itemExiste = items.some((item) => item.id === produtoSelecionado.id)
-
-      if (itemExiste) {
-        toast.warning('Item já adicionado ao carrinho')
-        fecharModal()
-        return
-      }
-
-      dispatch(
-        adicionarAoCarrinho({
-          id: produtoSelecionado.id,
-          nome: produtoSelecionado.nome,
-          foto: produtoSelecionado.foto,
-          preco: produtoSelecionado.preco,
-          porcao: produtoSelecionado.porcao,
-          restauranteId: restaurante.id,
-          restauranteNome: restaurante.titulo
-        })
-      )
-
-      dispatch(abrirCarrinho())
-      fecharModal()
+    if (!produtoSelecionado || !restaurante) return
+    const itemExiste = items.some((i) => i.id === produtoSelecionado.id)
+    if (itemExiste) {
+      toast.warning('Item já adicionado ao carrinho')
+      return fecharModal()
     }
+    dispatch(
+      adicionarAoCarrinho({
+        id: produtoSelecionado.id,
+        nome: produtoSelecionado.nome,
+        foto: produtoSelecionado.foto,
+        preco: produtoSelecionado.preco,
+        porcao: produtoSelecionado.porcao,
+        restauranteId: restaurante.id,
+        restauranteNome: restaurante.titulo
+      })
+    )
+    dispatch(abrirCarrinho())
+    fecharModal()
   }
 
-  if (!restaurante) return <p>Carregando...</p>
+  if (loading) return <Container>Carregando…</Container>
+  if (erro) return <Container>Erro: {erro}</Container>
+  if (!restaurante) return <Container>Restaurante não encontrado.</Container>
 
   return (
     <>
@@ -134,12 +143,10 @@ const Perfil = () => {
         step={stepCarrinho}
         onChangeStep={setStepCarrinho}
         onClose={() => {
-          setStepCarrinho('cart') // resetar sempre ao fechar
+          setStepCarrinho('cart')
           dispatch(fecharCarrinho())
         }}
       />
     </>
   )
 }
-
-export default Perfil

@@ -1,6 +1,5 @@
+// src/components/PaymentForm/index.tsx
 import { useState } from 'react'
-import axios from 'axios'
-
 import {
   Container,
   Sidebar,
@@ -11,6 +10,10 @@ import {
   Button,
   Col
 } from './styles'
+import { useFinalizeOrderMutation } from '../../services/api'
+
+// Ligue/desligue o modo demonstração aqui (ou via env var)
+const DEMO_MODE = true // ou: const DEMO_MODE = process.env.REACT_APP_DEMO === '1'
 
 type Props = {
   onBack: () => void
@@ -37,45 +40,62 @@ const PaymentForm = ({ onBack, onConfirm, total, cart, address }: Props) => {
   const [mes, setMes] = useState('')
   const [ano, setAno] = useState('')
 
+  const [finalizeOrder, { isLoading }] = useFinalizeOrderMutation()
+
   const handleOnlyLetters = (value: string) =>
     value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')
-
   const handleOnlyNumbers = (value: string) => value.replace(/\D/g, '')
 
   const handleConfirm = async () => {
+    // Se DEMO_MODE estiver ativo, usamos defaults quando campos estiverem vazios
+    const demoNome = nome || 'Cliente Demo'
+    const demoNumero = numero || '4111111111111111' // visa de teste
+    const demoCvv = cvv || '123'
+    const demoMes = mes || '12'
+    const demoAno = ano || '30' // 2030
+
+    // Se NÃO for demo, você pode manter validações (ou removi-las completamente)
+    if (!DEMO_MODE) {
+      if (!nome || !numero || !cvv || !mes || !ano) {
+        alert('Preencha todos os campos do cartão.')
+        return
+      }
+    }
+
     try {
-      const response = await axios.post(
-        'https://fake-api-tau.vercel.app/api/efood/checkout',
-        {
-          products: cart.map((item) => ({
-            id: item.id,
-            price: item.preco
-          })),
-          delivery: {
-            receiver: 'Nome do Cliente', // opcionalmente dinâmico
-            address: {
-              description: address.rua,
-              city: address.cidade,
-              zipCode: address.cep,
-              number: Number(address.numero),
-              complement: ''
-            }
-          },
-          payment: {
-            card: {
-              name: nome,
-              number: numero,
-              code: Number(cvv),
-              expires: {
-                month: Number(mes),
-                year: Number('20' + ano) // exemplo: "25" vira 2025
-              }
+      const payload = {
+        items: cart.map((item) => ({
+          id: item.id,
+          nome: item.nome,
+          preco: item.preco,
+          quantidade: item.quantidade
+        })),
+        total,
+        delivery: {
+          receiver: demoNome,
+          address: {
+            description: address.rua || 'Rua Demo',
+            city: address.cidade || 'Cidade Demo',
+            zipCode: address.cep || '00000-000',
+            number: Number(address.numero || '0'),
+            complement: ''
+          }
+        },
+        payment: {
+          card: {
+            name: demoNome,
+            number: demoNumero,
+            code: Number(demoCvv),
+            expires: {
+              month: Number(demoMes),
+              year: Number(`20${demoAno}`)
             }
           }
         }
-      )
+      }
 
-      const orderId = response.data.orderId
+      const res = await finalizeOrder(payload).unwrap()
+      const orderId = Number(res.id)
       onConfirm(orderId)
     } catch (error) {
       alert('Erro ao finalizar pedido.')
@@ -145,7 +165,9 @@ const PaymentForm = ({ onBack, onConfirm, total, cart, address }: Props) => {
           </div>
         </Row>
 
-        <Button onClick={handleConfirm}>Finalizar pagamento</Button>
+        <Button onClick={handleConfirm} disabled={isLoading}>
+          {isLoading ? 'Processando...' : 'Finalizar pagamento'}
+        </Button>
         <Button onClick={onBack}>Voltar para a edição de endereço</Button>
       </Sidebar>
     </Container>

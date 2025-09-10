@@ -1,0 +1,520 @@
+{
+  "restaurantes": [
+    {
+      "id": "1",
+      "titulo": "Pizza Legal",
+      "tipo": "Pizza",
+      "destacado": true,
+      "avaliacao": 4.6,
+      "descricao": "Pizzas artesanais",
+      "capa": "/images/capa-pizza.jpg",
+      "cardapio": [
+        {
+          "id": 101,
+          "nome": "Pizza Margherita",
+          "descricao": "Tomate, muçarela e manjericão",
+          "foto": "/images/margherita.jpg",
+          "preco": 59.9,
+          "porcao": "4 fatias"
+        },
+        {
+          "id": 102,
+          "nome": "Pepperoni",
+          "descricao": "Muçarela, pepperoni e orégano",
+          "foto": "/images/pepperoni.jpg",
+          "preco": 69.9,
+          "porcao": "6 fatias"
+        },
+        {
+          "id": 103,
+          "nome": "Quatro Queijos",
+          "descricao": "Muçarela, parmesão, gorgonzola e provolone",
+          "foto": "/images/queijos.jpg",
+          "preco": 74.9,
+          "porcao": "6 fatias"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "titulo": "Sushi Bom",
+      "tipo": "Japonesa",
+      "destacado": false,
+      "avaliacao": 4.8,
+      "descricao": "Sushis e sashimis frescos",
+      "capa": "/images/capa-sushi.jpg",
+      "cardapio": [
+        {
+          "id": 201,
+          "nome": "Combo Sushi 16p",
+          "descricao": "8 niguiris e 8 uramakis",
+          "foto": "/images/sushi.png",
+          "preco": 89.9,
+          "porcao": "16 peças"
+        },
+        {
+          "id": 202,
+          "nome": "Sashimi Salmão",
+          "descricao": "12 fatias de salmão fresco",
+          "foto": "/images/sashimi.jpg",
+          "preco": 84.9,
+          "porcao": "12 fatias"
+        },
+        {
+          "id": 203,
+          "nome": "Yakissoba",
+          "descricao": "Macarrão oriental com carne e legumes",
+          "foto": "/images/yakisoba.jpg",
+          "preco": 52.9,
+          "porcao": "700 g"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "titulo": "La Taquería",
+      "tipo": "Mexicana",
+      "destacado": false,
+      "avaliacao": 4.7,
+      "descricao": "Sabores apimentados e autênticos do México",
+      "capa": "/images/capa-mexicano.jpg",
+      "cardapio": [
+        {
+          "id": 301,
+          "nome": "Tacos al Pastor",
+          "descricao": "Porco marinado, abacaxi, cebola e coentro",
+          "foto": "/images/tacos.jpg",
+          "preco": 39.9,
+          "porcao": "3 unidades"
+        },
+        {
+          "id": 302,
+          "nome": "Burrito de Carne",
+          "descricao": "Feijão, arroz, carne, queijo e pico de gallo",
+          "foto": "/images/burrito.jpg",
+          "preco": 44.9,
+          "porcao": "400 g"
+        },
+        {
+          "id": 303,
+          "nome": "Nachos Supreme",
+          "descricao": "Totopos, chili, queijo, jalapeño e guacamole",
+          "foto": "/images/nachos.jpg",
+          "preco": 34.9,
+          "porcao": "400 g"
+        },
+        {
+          "id": 304,
+          "nome": "Quesadilla",
+          "descricao": "Tortilla recheada com queijo e frango",
+          "foto": "/images/quesadilla.jpg",
+          "preco": 32.9,
+          "porcao": "2 unidades"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "titulo": "Sabores do Oriente",
+      "tipo": "Árabe",
+      "destacado": false,
+      "avaliacao": 4.5,
+      "descricao": "Clássicos árabes feitos com temperos frescos",
+      "capa": "/images/capa-arabe.jpg",
+      "cardapio": [
+        {
+          "id": 401,
+          "nome": "Kibe Frito",
+          "descricao": "Trigo, carne moída e temperos",
+          "foto": "/images/kibe.jpg",
+          "preco": 29.9,
+          "porcao": "6 unidades"
+        },
+        {
+          "id": 402,
+          "nome": "Esfiha de Carne",
+          "descricao": "Massa leve com recheio suculento",
+          "foto": "/images/esfiha.jpg",
+          "preco": 22.9,
+          "porcao": "3 unidades"
+        },
+        {
+          "id": 403,
+          "nome": "Homus com Pão Sírio",
+          "descricao": "Pasta de grão-de-bico com tahine",
+          "foto": "/images/homus.jpg",
+          "preco": 27.9,
+          "porcao": "300 g"
+        },
+        {
+          "id": 404,
+          "nome": "Shawarma de Frango",
+          "descricao": "Frango, alface, tomate e molho de alho",
+          "foto": "/images/shawarma.jpg",
+          "preco": 34.9,
+          "porcao": "1 sanduíche"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "titulo": "Burger House",
+      "tipo": "Hamburgueria",
+      "destacado": false,
+      "avaliacao": 4.6,
+      "descricao": "Burgers suculentos e batatas crocantes",
+      "capa": "/images/capa-hamburguer.jpg",
+      "cardapio": [
+        {
+          "id": 501,
+          "nome": "Cheeseburger",
+          "descricao": "Burger 160g com queijo e molho da casa",
+          "foto": "/images/cheeseburger.jpg",
+          "preco": 34.9,
+          "porcao": "1 sanduíche"
+        },
+        {
+          "id": 502,
+          "nome": "Bacon Cheddar",
+          "descricao": "Burger com bacon crocante e cheddar",
+          "foto": "/images/bacon.jpg",
+          "preco": 39.9,
+          "porcao": "1 sanduíche"
+        },
+        {
+          "id": 503,
+          "nome": "Veggie Burger",
+          "descricao": "Grão-de-bico, vegetais e maionese vegana",
+          "foto": "/images/veggie.jpg",
+          "preco": 36.9,
+          "porcao": "1 sanduíche"
+        },
+        {
+          "id": 504,
+          "nome": "Batata Frita",
+          "descricao": "Batatas crocantes com sal",
+          "foto": "/images/batata.jpg",
+          "preco": 18.9,
+          "porcao": "300 g"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "titulo": "Casa delle Paste",
+      "tipo": "Massas",
+      "destacado": false,
+      "avaliacao": 4.7,
+      "descricao": "Massas frescas feitas diariamente",
+      "capa": "/images/capa-massas.jpg",
+      "cardapio": [
+        {
+          "id": 601,
+          "nome": "Spaghetti à Bolonhesa",
+          "descricao": "Molho de carne clássico e parmesão",
+          "foto": "/images/spaghetti.jpg",
+          "preco": 49.9,
+          "porcao": "700 g"
+        },
+        {
+          "id": 602,
+          "nome": "Fettuccine Alfredo",
+          "descricao": "Molho cremoso de parmesão e manteiga",
+          "foto": "/images/fettuccine.jpg",
+          "preco": 52.9,
+          "porcao": "700 g"
+        },
+        {
+          "id": 603,
+          "nome": "Lasanha à Bolonhesa",
+          "descricao": "Camadas de massa, molho e queijo",
+          "foto": "/images/lasanha.jpg",
+          "preco": 59.9,
+          "porcao": "700 g"
+        },
+        {
+          "id": 604,
+          "nome": "Gnocchi ao Sugo",
+          "descricao": "Nhoque de batata com molho de tomate",
+          "foto": "/images/gnocchi.jpg",
+          "preco": 47.9,
+          "porcao": "700 g"
+        }
+      ]
+    }
+  ],
+  "pedidos": [
+    {
+      "id": "4061",
+      "items": [
+        {
+          "id": 102,
+          "nome": "Pepperoni",
+          "preco": 69.9,
+          "quantidade": 1
+        }
+      ],
+      "total": 69.9,
+      "delivery": {
+        "receiver": "Tiago Silva",
+        "address": {
+          "description": "",
+          "city": "",
+          "zipCode": "",
+          "number": 0,
+          "complement": ""
+        }
+      },
+      "payment": {
+        "card": {
+          "name": "Tiago Silva",
+          "number": "1234567891230000",
+          "code": 123,
+          "expires": {
+            "month": 12,
+            "year": 2026
+          }
+        }
+      },
+      "createdAt": "2025-09-10T12:12:56.219Z"
+    },
+    {
+      "id": "8623",
+      "items": [
+        {
+          "id": 202,
+          "nome": "Sashimi Salmão",
+          "preco": 84.9,
+          "quantidade": 1
+        }
+      ],
+      "total": 84.9,
+      "delivery": {
+        "receiver": "Cliente Demo",
+        "address": {
+          "description": "Rua Demo",
+          "city": "Cidade Demo",
+          "zipCode": "00000-000",
+          "number": 0,
+          "complement": ""
+        }
+      },
+      "payment": {
+        "card": {
+          "name": "Cliente Demo",
+          "number": "4111111111111111",
+          "code": 123,
+          "expires": {
+            "month": 12,
+            "year": 2030
+          }
+        }
+      },
+      "createdAt": "2025-09-10T12:45:52.187Z"
+    },
+    {
+      "id": "90b9",
+      "items": [
+        {
+          "id": 202,
+          "nome": "Sashimi Salmão",
+          "preco": 84.9,
+          "quantidade": 1
+        }
+      ],
+      "total": 84.9,
+      "delivery": {
+        "receiver": "Cliente Demo",
+        "address": {
+          "description": "Rua Demo",
+          "city": "Cidade Demo",
+          "zipCode": "00000-000",
+          "number": 0,
+          "complement": ""
+        }
+      },
+      "payment": {
+        "card": {
+          "name": "Cliente Demo",
+          "number": "4111111111111111",
+          "code": 123,
+          "expires": {
+            "month": 12,
+            "year": 2030
+          }
+        }
+      },
+      "createdAt": "2025-09-10T12:48:10.580Z"
+    },
+    {
+      "id": "c0ba",
+      "items": [
+        {
+          "id": 102,
+          "nome": "Pepperoni",
+          "preco": 69.9,
+          "quantidade": 1
+        }
+      ],
+      "total": 69.9,
+      "delivery": {
+        "receiver": "Cliente Demo",
+        "address": {
+          "description": "Rua Demo",
+          "city": "Cidade Demo",
+          "zipCode": "00000-000",
+          "number": 0,
+          "complement": ""
+        }
+      },
+      "payment": {
+        "card": {
+          "name": "Cliente Demo",
+          "number": "4111111111111111",
+          "code": 123,
+          "expires": {
+            "month": 12,
+            "year": 2030
+          }
+        }
+      },
+      "createdAt": "2025-09-10T12:52:09.508Z"
+    },
+    {
+      "id": "5f91",
+      "items": [
+        {
+          "id": 102,
+          "nome": "Pepperoni",
+          "preco": 69.9,
+          "quantidade": 1
+        }
+      ],
+      "total": 69.9,
+      "delivery": {
+        "receiver": "Cliente Demo",
+        "address": {
+          "description": "Rua Demo",
+          "city": "Cidade Demo",
+          "zipCode": "00000-000",
+          "number": 0,
+          "complement": ""
+        }
+      },
+      "payment": {
+        "card": {
+          "name": "Cliente Demo",
+          "number": "4111111111111111",
+          "code": 123,
+          "expires": {
+            "month": 12,
+            "year": 2030
+          }
+        }
+      },
+      "createdAt": "2025-09-10T12:55:51.086Z"
+    },
+    {
+      "id": "074d",
+      "items": [
+        {
+          "id": 103,
+          "nome": "Quatro Queijos",
+          "preco": 74.9,
+          "quantidade": 1
+        }
+      ],
+      "total": 74.9,
+      "delivery": {
+        "receiver": "Cliente Demo",
+        "address": {
+          "description": "Rua Demo",
+          "city": "Cidade Demo",
+          "zipCode": "00000-000",
+          "number": 0,
+          "complement": ""
+        }
+      },
+      "payment": {
+        "card": {
+          "name": "Cliente Demo",
+          "number": "4111111111111111",
+          "code": 123,
+          "expires": {
+            "month": 12,
+            "year": 2030
+          }
+        }
+      },
+      "createdAt": "2025-09-10T12:58:09.932Z"
+    },
+    {
+      "id": "3d08",
+      "items": [
+        {
+          "id": 301,
+          "nome": "Tacos al Pastor",
+          "preco": 39.9,
+          "quantidade": 1
+        }
+      ],
+      "total": 39.9,
+      "delivery": {
+        "receiver": "Cliente Demo",
+        "address": {
+          "description": "Rua Demo",
+          "city": "Cidade Demo",
+          "zipCode": "00000-000",
+          "number": 0,
+          "complement": ""
+        }
+      },
+      "payment": {
+        "card": {
+          "name": "Cliente Demo",
+          "number": "4111111111111111",
+          "code": 123,
+          "expires": {
+            "month": 12,
+            "year": 2030
+          }
+        }
+      },
+      "createdAt": "2025-09-10T12:59:57.607Z"
+    },
+    {
+      "id": "255b",
+      "items": [
+        {
+          "id": 403,
+          "nome": "Homus com Pão Sírio",
+          "preco": 27.9,
+          "quantidade": 1
+        }
+      ],
+      "total": 27.9,
+      "delivery": {
+        "receiver": "Cliente Demo",
+        "address": {
+          "description": "Rua Demo",
+          "city": "Cidade Demo",
+          "zipCode": "00000-000",
+          "number": 0,
+          "complement": ""
+        }
+      },
+      "payment": {
+        "card": {
+          "name": "Cliente Demo",
+          "number": "4111111111111111",
+          "code": 123,
+          "expires": {
+            "month": 12,
+            "year": 2030
+          }
+        }
+      },
+      "createdAt": "2025-09-10T13:13:49.751Z"
+    }
+  ]
+}

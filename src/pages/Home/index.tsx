@@ -13,14 +13,29 @@ interface Restaurante {
   capa: string
 }
 
+// Em dev usamos json-server; em prod usamos a função /api/restaurantes
+const API_BASE =
+  process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : '/api'
+
 const Home = () => {
   const [restaurantes, setRestaurantes] = useState<Restaurante[]>([])
+  const [erro, setErro] = useState<string | null>(null)
+  const [carregando, setCarregando] = useState(true)
 
   useEffect(() => {
-    fetch('https://fake-api-tau.vercel.app/api/efood/restaurantes')
-      .then((res) => res.json())
+    setCarregando(true)
+    fetch(`${API_BASE}/restaurantes`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        return res.json()
+      })
       .then((data) => setRestaurantes(data))
+      .catch((e) => setErro(e.message))
+      .finally(() => setCarregando(false))
   }, [])
+
+  if (carregando) return <Container>Carregando…</Container>
+  if (erro) return <Container>Erro: {erro}</Container>
 
   return (
     <Container>
