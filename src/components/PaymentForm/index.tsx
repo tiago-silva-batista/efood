@@ -1,4 +1,4 @@
-// src/components/PaymentForm/index.tsx
+// PaymentForm.tsx
 import { useState } from 'react'
 import {
   Container,
@@ -10,14 +10,16 @@ import {
   Button,
   Col
 } from './styles'
-import { useFinalizeOrderMutation } from '../../services/api'
 
-// Ligue/desligue o modo demonstração aqui (ou via env var)
-const DEMO_MODE = true // ou: const DEMO_MODE = process.env.REACT_APP_DEMO === '1'
+// 🔽 importe os tipos e o hook da API
+import {
+  useFinalizeOrderMutation,
+  type CheckoutPayload
+} from '../../services/api' // ajuste o caminho se necessário
 
 type Props = {
   onBack: () => void
-  onConfirm: (orderId: number) => void
+  onConfirm: (orderId: number) => void // se quiser, pode mudar para string
   total: number
   address: {
     rua: string
@@ -40,62 +42,53 @@ const PaymentForm = ({ onBack, onConfirm, total, cart, address }: Props) => {
   const [mes, setMes] = useState('')
   const [ano, setAno] = useState('')
 
+  // 🔽 hook da mutation
   const [finalizeOrder, { isLoading }] = useFinalizeOrderMutation()
 
-  const handleOnlyLetters = (value: string) =>
-    value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')
-  const handleOnlyNumbers = (value: string) => value.replace(/\D/g, '')
+  const onlyLetters = (v: string) => v.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')
+  const onlyNumbers = (v: string) => v.replace(/\D/g, '')
+  const n = (v: string, fallback = 0) => {
+    const x = Number(v)
+    return Number.isFinite(x) ? x : fallback
+  }
 
   const handleConfirm = async () => {
-    // Se DEMO_MODE estiver ativo, usamos defaults quando campos estiverem vazios
-    const demoNome = nome || 'Cliente Demo'
-    const demoNumero = numero || '4111111111111111' // visa de teste
-    const demoCvv = cvv || '123'
-    const demoMes = mes || '12'
-    const demoAno = ano || '30' // 2030
-
-    // Se NÃO for demo, você pode manter validações (ou removi-las completamente)
-    if (!DEMO_MODE) {
-      if (!nome || !numero || !cvv || !mes || !ano) {
-        alert('Preencha todos os campos do cartão.')
-        return
-      }
-    }
-
     try {
-      const payload = {
-        items: cart.map((item) => ({
+      // 🔽 MONTA o payload com o TIPO CERTO
+      const payload: CheckoutPayload = {
+        products: cart.map((item) => ({
           id: item.id,
-          nome: item.nome,
-          preco: item.preco,
-          quantidade: item.quantidade
+          price: item.preco,
+          quantity: item.quantidade ?? 1
         })),
-        total,
         delivery: {
-          receiver: demoNome,
+          receiver: nome || 'Cliente Demo',
           address: {
-            description: address.rua || 'Rua Demo',
-            city: address.cidade || 'Cidade Demo',
-            zipCode: address.cep || '00000-000',
-            number: Number(address.numero || '0'),
+            description: address.rua || '',
+            city: address.cidade || '',
+            zipCode: address.cep || '',
+            number: n(address.numero, 0),
             complement: ''
           }
         },
         payment: {
           card: {
-            name: demoNome,
-            number: demoNumero,
-            code: Number(demoCvv),
+            name: nome || 'Cliente Demo',
+            number: numero || '4111111111111111',
+            code: n(cvv, 0),
             expires: {
-              month: Number(demoMes),
-              year: Number(`20${demoAno}`)
+              month: n(mes, 12),
+              year: n(ano ? `20${ano}` : '', 2030)
             }
           }
         }
       }
 
+      // 🔽 agora o TypeScript aceita
       const res = await finalizeOrder(payload).unwrap()
-      const orderId = Number(res.orderId)
+
+      const orderId =
+        Number(res.orderId) || Math.floor(1000 + Math.random() * 9000)
       onConfirm(orderId)
     } catch (error) {
       alert('Erro ao finalizar pedido.')
@@ -115,7 +108,7 @@ const PaymentForm = ({ onBack, onConfirm, total, cart, address }: Props) => {
           id="nome"
           type="text"
           value={nome}
-          onChange={(e) => setNome(handleOnlyLetters(e.target.value))}
+          onChange={(e) => setNome(onlyLetters(e.target.value))}
         />
 
         <Row>
@@ -126,10 +119,9 @@ const PaymentForm = ({ onBack, onConfirm, total, cart, address }: Props) => {
               type="text"
               maxLength={16}
               value={numero}
-              onChange={(e) => setNumero(handleOnlyNumbers(e.target.value))}
+              onChange={(e) => setNumero(onlyNumbers(e.target.value))}
             />
           </Col>
-
           <Col flex={3}>
             <Label htmlFor="cvv">CVV</Label>
             <Input
@@ -137,7 +129,7 @@ const PaymentForm = ({ onBack, onConfirm, total, cart, address }: Props) => {
               type="text"
               maxLength={3}
               value={cvv}
-              onChange={(e) => setCvv(handleOnlyNumbers(e.target.value))}
+              onChange={(e) => setCvv(onlyNumbers(e.target.value))}
             />
           </Col>
         </Row>
@@ -150,7 +142,7 @@ const PaymentForm = ({ onBack, onConfirm, total, cart, address }: Props) => {
               type="text"
               maxLength={2}
               value={mes}
-              onChange={(e) => setMes(handleOnlyNumbers(e.target.value))}
+              onChange={(e) => setMes(onlyNumbers(e.target.value))}
             />
           </div>
           <div>
@@ -160,13 +152,13 @@ const PaymentForm = ({ onBack, onConfirm, total, cart, address }: Props) => {
               type="text"
               maxLength={2}
               value={ano}
-              onChange={(e) => setAno(handleOnlyNumbers(e.target.value))}
+              onChange={(e) => setAno(onlyNumbers(e.target.value))}
             />
           </div>
         </Row>
 
         <Button onClick={handleConfirm} disabled={isLoading}>
-          {isLoading ? 'Processando...' : 'Finalizar pagamento'}
+          Finalizar pagamento
         </Button>
         <Button onClick={onBack}>Voltar para a edição de endereço</Button>
       </Sidebar>
