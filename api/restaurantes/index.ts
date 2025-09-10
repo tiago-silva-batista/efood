@@ -1,7 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
+// carrega os dados usados no deploy (mesmo conteúdo do seu db.json)
 const data = require('../_data.json') as {
-  restaurantes: Array<{ id: number }>
+  restaurantes: Array<any>
 }
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
@@ -11,21 +12,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
       return
     }
 
-    const { id } = req.query
-    const numId = Number(id)
-
-    if (Number.isNaN(numId)) {
-      res.status(400).json({ error: 'Invalid id' })
-      return
-    }
-
-    const restaurante = data.restaurantes.find((r) => r.id === numId)
-    if (!restaurante) {
-      res.status(404).json({ error: 'Not Found' })
-      return
-    }
-
-    res.status(200).json(restaurante)
+    res.status(200).json(data.restaurantes)
   } catch (e) {
     console.error(e)
     res.status(500).json({ error: 'Internal Server Error' })
