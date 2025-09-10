@@ -1,7 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
+// importa o mesmo arquivo api/_data.json
 const data = require('../_data.json') as {
-  restaurantes: Array<{ id: number }>
+  restaurantes: Array<{ id: string | number }>
 }
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
@@ -11,15 +12,13 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
       return
     }
 
-    const { id } = req.query
-    const numId = Number(id)
+    // pega o id da rota e normaliza para string
+    const idParam = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id
+    const idStr = String(idParam)
 
-    if (Number.isNaN(numId)) {
-      res.status(400).json({ error: 'Invalid id' })
-      return
-    }
+    // compara como string para funcionar com "1", "2", ...
+    const restaurante = data.restaurantes.find((r) => String(r.id) === idStr)
 
-    const restaurante = data.restaurantes.find((r) => r.id === numId)
     if (!restaurante) {
       res.status(404).json({ error: 'Not Found' })
       return
